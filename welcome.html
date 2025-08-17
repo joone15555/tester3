@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشكاة - مرحباً</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #F5F1EB 0%, #F2F0ED 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background: #F8F8F8;
+            border-radius: 40px;
+            /* Reduced excessive padding and changed layout to center content better */
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            position: relative;
+        }
+        
+        .welcome-card {
+            background: #a7957c;
+            border-radius: 30px;
+            /* Reduced padding for better proportions */
+            padding: 30px 25px;
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .brand-image {
+            max-width: 250px;
+            height: auto;
+            display: block;
+        }
+        
+        .cta-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Increased gap for better visual separation */
+            gap: 20px;
+            text-align: center;
+        }
+        
+        .cta-text {
+            color: #322449;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        
+        .cta-button {
+            background: #3e3251;
+            color: white;
+            border: none;
+            /* Slightly adjusted padding for better proportions */
+            padding: 16px 45px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: underline;
+            display: inline-block;
+        }
+        
+        .cta-button:hover {
+            background: #4A3D5F;
+            transform: translateY(-1px);
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="welcome-card">
+            <img src="LOGO.png" alt="شعار مشكاة" class="brand-image">
+        </div>
+        <div class="cta-section">
+            <div class="cta-text">هل تريدين أن أرشدك؟</div>
+            <a href="services.html" class="cta-button">اضغط هنا</a>
+        </div>
+    </div>
+</body>

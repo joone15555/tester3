@@ -1,0 +1,386 @@
+<!DOCTYPE HTML>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>مقهى ماب - خريطة المقاهي</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8f8f8 0%, #f2f0ed 100%);
+      min-height: 100vh;
+      direction: rtl;
+    }
+
+    .mobile-container {
+      width: 100%;
+      max-width: 414px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: #f5f1eb;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .mobile-header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .mobile-logo {
+      width: 120px;
+      height: auto;
+    }
+
+    .service-title {
+      text-align: center;
+      padding: 20px;
+      color: #5d4e75;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .map-section {
+      padding: 20px;
+    }
+
+    .map-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .control-btn, .control-select {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      background: #a6967c;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .control-btn:hover, .control-select:hover {
+      background: #9a8a70;
+      transform: translateY(-2px);
+    }
+
+    #map {
+      width: 100%;
+      height: 300px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    #lists {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    #lists details {
+      margin-bottom: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    #lists summary {
+      padding: 15px;
+      background: #f8f8f8;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      min-height: 44px;
+    }
+
+    .list-item:hover {
+      background: #f8f8f8;
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .item-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .item-dist {
+      color: #666;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .icon {
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .cat-count {
+      background: #a6967c;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .back-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #5d4e75;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 25px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(93, 78, 117, 0.3);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .back-btn:hover {
+      background: #4a3f63;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(93, 78, 117, 0.4);
+    }
+
+    @media (min-width: 768px) {
+      .mobile-container {
+        max-width: 500px;
+        border-radius: 25px;
+        margin: 20px auto;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      }
+
+      #map {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="mobile-container">
+    <header class="mobile-header">
+      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LOGO2-rxHUZ2F7EN6WcrjqgXBv3zP4rXR5Ve.png" alt="مشكاة" class="mobile-logo" />
+    </header>
+
+    <div class="service-title">☕ خريطة المقاهي</div>
+
+    <div class="map-section">
+      <div class="map-controls">
+        <button class="control-btn" id="speech-toggle">🔊 وصف الطريق</button>
+        <button class="control-btn" id="voice-btn">🎤 تحدث بصوتك</button>
+      </div>
+
+      <div id="map"></div>
+      <div id="lists"></div>
+    </div>
+
+    <button class="back-btn" onclick="goBack()">الرجوع الى الخدمات</button>
+    <a href="services.html" class="back-btn">الرجوع الى الخدمات</a>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+  <script>
+    const categories = {
+      "المقاهي": {filter:'amenity=cafe', icon:'☕'}
+    };
+
+    let userLocation = [21.4225,39.8262];
+    let speechEnabled = true;
+    let lang = "ar-SA";
+
+    document.getElementById("speech-toggle").addEventListener("click", () => {
+      speechEnabled = !speechEnabled;
+      const btn = document.getElementById("speech-toggle");
+      btn.innerHTML = speechEnabled ? "🔊 وصف الطريق" : "🔇 إيقاف الوصف";
+      btn.style.background = speechEnabled ? "#a6967c" : "#999";
+    });
+
+    const map = L.map('map', {
+      zoomControl: true,
+      attributionControl: false,
+      tap: true,
+      touchZoom: true,
+      doubleClickZoom: true
+    }).setView(userLocation, 16);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+      attribution:'&copy; OpenStreetMap contributors' 
+    }).addTo(map);
+
+    let userMarker = L.marker(userLocation).addTo(map).bindPopup("موقعك الحالي").openPopup();
+    let routingControl = null;
+    let allPlaces = [];
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      userLocation = [pos.coords.latitude, pos.coords.longitude];
+      userMarker.setLatLng(userLocation).bindPopup("موقعك الحالي");
+      map.setView(userLocation, 16);
+      loadPlaces(userLocation[0], userLocation[1]);
+    }, () => {
+      loadPlaces(userLocation[0], userLocation[1]);
+    });
+
+    function loadPlaces(lat, lon) {
+      const listsDiv = document.getElementById("lists");
+      listsDiv.innerHTML = "";
+      allPlaces = [];
+      
+      for(const [name, cat] of Object.entries(categories)) {
+        const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json];node[${cat.filter}](around:1500,${lat},${lon});out;`;
+        
+        fetch(overpassUrl)
+          .then(res => res.json())
+          .then(data => {
+            const limitedElements = data.elements.slice(0, 2);
+            let html = `<details open><summary>${cat.icon} ${name} <span class="cat-count">${limitedElements.length}</span></summary>`;
+            
+            limitedElements.forEach((el, index) => {
+              const placeLat = el.lat;
+              const placeLon = el.lon;
+              let placeName = el.tags.name || `مقهى ${index + 1}`;
+              
+              allPlaces.push({name: placeName, lat: placeLat, lon: placeLon});
+              
+              const dist = calcDistance(userLocation[0], userLocation[1], placeLat, placeLon).toFixed(2);
+              
+              L.marker([placeLat, placeLon]).addTo(map).bindPopup(`${placeName}<br>${dist} كم`);
+              
+              html += `<div class="list-item" onclick="focusPlace(${placeLat},${placeLon},'${placeName}')">
+                        <span class="item-name">
+                          <span class="icon">${cat.icon}</span>
+                          ${placeName}
+                        </span>
+                        <span class="item-dist">${dist} كم</span>
+                      </div>`;
+            });
+            html += "</details>";
+            listsDiv.innerHTML += html;
+          });
+      }
+    }
+
+    function focusPlace(lat, lon, name) {
+      map.setView([lat, lon], 18);
+      L.popup().setLatLng([lat, lon]).setContent(name).openOn(map);
+      speak(name);
+
+      if(!speechEnabled) return;
+
+      if(routingControl) map.removeControl(routingControl);
+      routingControl = L.Routing.control({
+        waypoints: [L.latLng(userLocation[0], userLocation[1]), L.latLng(lat, lon)],
+        lineOptions: {styles: [{color: '#a6967c', opacity: 0.8, weight: 5}]},
+        addWaypoints: false,
+        draggableWaypoints: false,
+        routeWhileDragging: false,
+        showAlternatives: false,
+        createMarker: () => null
+      }).addTo(map);
+
+      describeRoute(userLocation, [lat, lon], name);
+    }
+
+    function describeRoute(start, end, placeName) {
+      const latDiff = end[0] - start[0];
+      const lonDiff = end[1] - start[1];
+      let text = `اتجه من موقعك الحالي إلى ${placeName}. `;
+      text += Math.abs(latDiff) > Math.abs(lonDiff) ? (latDiff > 0 ? "تحرك شمالاً. " : "تحرك جنوباً. ") : (lonDiff > 0 ? "تحرك شرقاً. " : "تحرك غرباً. ");
+      speak(text);
+    }
+
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      speechSynthesis.speak(utterance);
+    }
+
+    function calcDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2)**2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2)**2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = lang;
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    document.getElementById("voice-btn").addEventListener("click", () => {
+      recognition.lang = lang;
+      recognition.start();
+    });
+
+    recognition.onresult = function(event) {
+      const speech = event.results[0][0].transcript.toLowerCase();
+      let found = allPlaces.find(p => p.name.toLowerCase().includes(speech));
+      if(found) {
+        focusPlace(found.lat, found.lon, found.name);
+      } else {
+        speak("المقهى غير موجود");
+      }
+    }
+  </script>
+</body>
+</html>

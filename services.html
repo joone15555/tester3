@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشكاة - الخدمات</title>
+
+    <!--
+    =========================================
+    CSS مدمج لتنسيق الصفحة بالكامل
+    =========================================
+    - body: تصميم الخلفية باستخدام تدرج لوني، محاذاة المحتوى في منتصف الشاشة.
+    - phone-container: يمثل الهاتف الافتراضي بإطار دائري وظل، محاذاة رأسية وعمودية.
+    - header: يحتوي على الشعار والتعليمات.
+    - services-grid: شبكة لعرض جميع الخدمات (3 أعمدة).
+    - service-item: بطاقة الخدمة، تحتوي على أيقونة وخط النص.
+    - hover effect: عند المرور بالفأرة، تتغير الخلفية وترتفع البطاقة قليلًا.
+    - media query: لضبط الشاشة على الأجهزة الصغيرة.
+    =========================================
+    -->
+    <style>
+        /* إعادة ضبط الهوامش والحشو لجميع العناصر */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* تصميم خلفية الصفحة */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f8f8 0%, #f2f0ed 100%);
+            min-height: 100vh; /* تغطية كامل الشاشة */
+            display: flex;
+            align-items: center; /* محاذاة عمودية */
+            justify-content: center; /* محاذاة أفقية */
+            padding: 20px;
+        }
+        
+        /* إطار الهاتف الافتراضي */
+        .phone-container {
+            width: 375px; /* عرض الهاتف */
+            height: 812px; /* ارتفاع الهاتف */
+            background: #f5f1eb;
+            border-radius: 40px; /* حواف دائرية كبيرة لإعطاء شكل الهاتف */
+            padding: 60px 30px 40px; /* مسافة داخلية بين الحواف والمحتوى */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); /* ظل لإعطاء عمق */
+            display: flex;
+            flex-direction: column; /* ترتيب المحتوى عمودي */
+            align-items: center; /* محاذاة المحتوى في المنتصف */
+        }
+        
+        /* رأس الصفحة */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        /* شعار التطبيق */
+        .logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 10px;
+            display: block;
+        }
+        
+        /* اسم التطبيق (غير مستخدم حاليًا) */
+        .brand-name {
+            color: #5d4e75;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        /* نص التعليمات للمستخدم */
+        .instruction {
+            color: #000000;
+            font-size: 16px;
+            line-height: 1.4;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        /* شبكة عرض الخدمات */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* ثلاث أعمدة متساوية */
+            gap: 15px; /* مسافة بين البطاقات */
+            width: 100%;
+            max-width: 300px; /* الحد الأقصى للشبكة */
+        }
+        
+        /* كل بطاقة خدمة */
+        .service-item {
+            background: #a6967c; /* لون الخلفية الأساسي للبطاقة */
+            border-radius: 15px;
+            padding: 20px 10px;
+            text-align: center;
+            cursor: pointer; /* عند المرور تصبح البطاقة قابلة للنقر */
+            transition: all 0.3s ease; /* حركة سلسة عند المرور */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+        }
+        
+        /* تأثير عند المرور على البطاقة */
+        .service-item:hover {
+            background: #9a8a70;
+            transform: translateY(-3px); /* رفع البطاقة قليلاً */
+        }
+        
+
+/* أيقونة الخدمة - تكبير داخلي لكل الصور */
+.service-icon {
+    width: 40px;  
+    height: 40px; 
+    margin-bottom: 5px;
+    object-fit: contain; /* يحافظ على تناسب الصورة بدون تشويه */
+    transform: scale(2); /* تكبير كل الأيقونات بنسبة 50% */
+    transform-origin: center; /* التكبير من المنتصف */
+}
+
+
+
+        /* اسم الخدمة */
+        .service-name {
+            color: #2d2d2d;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* ضبط الهاتف عند الشاشات الصغيرة */
+        @media (max-width: 400px) {
+            .phone-container {
+                width: 100%;
+                height: 100vh;
+                border-radius: 0; /* إزالة الحواف الدائرية */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الإطار الرئيسي -->
+    <div class="phone-container">
+        <!-- رأس الصفحة: الشعار والتعليمات -->
+        <div class="header">
+            <img src="LOGO2.png" alt="مشكاة" class="logo">
+            <div class="instruction">اضغط على أيقونة الخدمة لمعرفة موقعها الأقرب إليك</div>
+        </div>
+        
+            <section id="services">
+        <!-- شبكة الخدمات -->
+        <div class="services-grid">
+            
+           <!-- بطاقة الخدمة: حلاق -->
+<div class="service-item" data-service="barber" onclick="selectService('barber')">
+    <img src="6.png" alt="حلاق" class="service-icon">
+    <div class="service-name">حلاق</div>
+</div>
+
+
+            <!-- بطاقة الخدمة: دورة مياه -->
+            <div class="service-item" onclick="selectService('restroom')">
+                 <img src="17.png" alt="دورة مياه" class="service-icon">
+                <div class="service-name">دورة مياه</div>
+                
+            </div>
+
+            <!-- بطاقة الخدمة: صيدلية -->
+
+          <div class="service-item" onclick="window.location.href='صيدلية-ماب.html'">
+    <img src="7.png" alt="صيدلية" class="service-icon">
+    <div class="service-name">صيدلية</div>
+</div>
+
+
+            <!-- بطاقة الخدمة: مستشفى -->
+            <div class="service-item" onclick="window.location.href='مستشفى-ماب.html'">
+               <img src="15.png" alt="مستشفى" class="service-icon">
+                <div class="service-name">مستشفى</div>
+            </div>
+
+            <!-- بطاقة الخدمة: مقهى -->
+            <div class="service-item" onclick="window.location.href='مقهى-ماب.html'">
+                <img src="11.png" alt="مقهى" class="service-icon">
+                <div class="service-name">مقهى</div>
+            </div>
+
+            <!-- بطاقة الخدمة: مطعم -->
+            <div class="service-item" onclick="window.location.href='مطعم-ماب.html'">
+              <img src="13.png" alt="مطعم" class="service-icon">
+                <div class="service-name">مطعم</div>
+            </div>
+
+            <!-- بطاقة الخدمة: بقالة -->
+            <div class="service-item" onclick="window.location.href='بقالة-ماب.html'">
+                <img src="14.png" alt="بقالة" class="service-icon">
+                <div class="service-name">بقالة</div>
+            </div>
+
+            <!-- بطاقة الخدمة: هدايا تذكارية -->
+            <div class="service-item" onclick="window.location.href='هدايا تذكارية-ماب.html'">
+                <img src="12.png" alt="هدايا تذكارية" class="service-icon">
+                <div class="service-name">هدايا تذكارية</div>
+            </div>
+
+            <!-- بطاقة الخدمة: سوق -->
+            <div class="service-item" onclick="window.location.href='سوق-ماب.html'">
+                <img src="16.png" alt="سوق" class="service-icon">
+                <div class="service-name">سوق</div>
+            </div>
+
+            <!-- بطاقة الخدمة: تحويل عملات -->
+            <div class="service-item" onclick="window.location.href='تحويل عملات-ماب.html'">
+                <img src="9.png" alt="تحويل عملات" class="service-icon">
+                <div class="service-name">تحويل عملات</div>
+            </div>
+
+            <!-- بطاقة الخدمة: صراف آلي -->
+            <div class="service-item" onclick="window.location.href='صراف-ماب.html'">
+                 <img src="8.png" alt="صراف الالي" class="service-icon">
+                <div class="service-name">صراف آلي</div>
+            </div>
+
+            <!-- بطاقة الخدمة: اتصالات -->
+            <div class="service-item"  onclick="window.location.href='اتصالات-ماب.html'">
+                 <img src="10.png" alt="اتصالات" class="service-icon">
+                    <div class="service-name"> اتصالات</div>
+            </div>
+
+    <!-- محتوى الخدمات -->
+</section>
